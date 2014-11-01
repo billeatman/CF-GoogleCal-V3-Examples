@@ -36,23 +36,21 @@
     // default engine port using our run embedded server command
     "defaultPort" : 8080,
     // Generation CFC preference by CommandBox scaffolders
-    "CFCType" : "tag"
+    "CFCType" : "tag",
     // default project URL if not using our start server commands
     "ProjectURL" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples",
     // license array of licenses it can have
     "License" : [
         { "type" : "APACHE 2", "URL" : "http://www.apache.org/licenses/LICENSE-2.0.html" }
-    ]
-    // contributors array of strings or structs: name,email,url
-    "Contributors" : [ {name="William Eatman", email="billeatman@hotmail.com", url="http://www.progratory.com"} ],
+    ],
     // dependencies, a shortcut for latest version is to use the * string
     "Dependencies" : {
-        "CF-GoogleCal-V3" : "x" // latest version from ForgeBox
-        "oauth2" : "x", // latest version from ForgeBox
+        "CF-GoogleCal-V3" : "x", // latest version from ForgeBox
+        "oauth2" : "x" // latest version from ForgeBox
     },
     // Tracks install locations so uninstall can work.
     "installPaths" : {
-        "CF-GoogleCal-V3" : "CF-GoogleCal-V3" // relative to package root (no leading slash)
-        "oauth2" : "oauth2", // relative to package root (no leading slash)
+        "CF-GoogleCal-V3" : "CF-GoogleCal-V3", // relative to package root (no leading slash)
+        "oauth2" : "oauth2" // relative to package root (no leading slash)
     }
 }

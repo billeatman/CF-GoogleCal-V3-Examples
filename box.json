@@ -1,56 +1,35 @@
 {
     "name" : "CF-GoogleCal-V3-Examples",
-    // ForgeBox unique slug
     "slug" : "CF-GoogleCal-V3-Examples",
-    // semantic version of your package
     "version" : "0.0.1",
-    // author of this package
     "author" : "William Eatman <billeatman@hotmail.com>",
-    // location of where to download the package, overrides ForgeBox location
     "location" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples.git",
-    // This boolean bit determines if the container directory will contain a sub-directory according to
-    // the package slug name, the default is true
     "createPackageDirectory" : "true",
-    // project homepage URL
     "Homepage" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples",
-    // documentation URL
     "Documentation" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples",
-    // source repository, valid keys: type, URL
     "Repository" : {
         "type" : "git", "URL" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples.git"
     },
-    // bug issue management URL
     "Bugs" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples/issues",
-    // ForgeBox short description
     "shortDescription" : "Examples for CF-GoogleCal-V3",
-    // ForgeBox keywords, array of strings
     "keywords" : [ "CF-GoogleCal-V3", "Oauth2", "Google", "Calendar", "V3"],
-    // cfml engines it supports, type and version
     "engines" : [
         { "type" : "railo", "version" : ">=4.1.x" },
         { "type" : "adobe", "version" : ">=9.0.0" }
     ],
-    // default engine to use using our run embedded server command
-    // Available engines are railo, cf9, cf10, cf11
     "defaultEngine" : "cf11, cf10, cf9, railo",
-    // default engine port using our run embedded server command
     "defaultPort" : 8080,
-    // Generation CFC preference by CommandBox scaffolders
     "CFCType" : "tag",
-    // default project URL if not using our start server commands
     "ProjectURL" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples",
-    // license array of licenses it can have
     "License" : [
         { "type" : "APACHE 2", "URL" : "http://www.apache.org/licenses/LICENSE-2.0.html" }
     ],
-    // dependencies, a shortcut for latest version is to use the * string
     "Dependencies" : {
-        "CF-GoogleCal-V3" : "x", // latest version from ForgeBox
-        "oauth2" : "x" // latest version from ForgeBox
+        "CF-GoogleCal-V3" : "x", 
+        "oauth2" : "x" 
     },
-    // Tracks install locations so uninstall can work.
     "installPaths" : {
-        "CF-GoogleCal-V3" : "CF-GoogleCal-V3", // relative to package root (no leading slash)
-        "oauth2" : "oauth2" // relative to package root (no leading slash)
+        "CF-GoogleCal-V3" : "CF-GoogleCal-V3",
+        "oauth2" : "oauth2"
     }
 }

@@ -9,19 +9,13 @@ This example creates a calendar called "Hello World" and dumps the result.  This
 
 more coming soon...
 
-
-
-# Getting Started #
-
-For an example, visit the example project
-
-https://github.com/billeatman/oauth2-Examples.git
-
 # CommandBox #
 
 http://www.ortussolutions.com/products/commandbox
 
-install cf-googlecal-v3-examples
+```
+   install cf-googlecal-v3-examples
+```
 
 # Getting Started #
 

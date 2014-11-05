@@ -22,7 +22,7 @@
     "CFCType" : "tag",
     "ProjectURL" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples",
     "License" : [
-        { "type" : "APACHE 2", "URL" : "http://www.apache.org/licenses/LICENSE-2.0.html" }
+        { "type" : "Apache2", "URL" : "http://www.apache.org/licenses/LICENSE-2.0.html" }
     ],
     "Dependencies" : {
         "CF-GoogleCal-V3" : "x", 

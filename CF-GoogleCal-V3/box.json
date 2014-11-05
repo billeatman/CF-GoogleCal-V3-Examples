@@ -1,0 +1,26 @@
+{
+    "name" : "CF-GoogleCal-V3",
+    "slug" : "CF-GoogleCal-V3",
+    "version" : "0.5.2",
+    "author" : "William Eatman <billeatman@hotmail.com>",
+    "location" : "https://github.com/billeatman/CF-GoogleCal-V3/archive/master.zip",
+    "createPackageDirectory" : "true",
+    "Homepage" : "https://github.com/billeatman/CF-GoogleCal-V3",
+    "Documentation" : "https://github.com/billeatman/CF-GoogleCal-V3",
+    "Repository" : {
+        "type" : "git", "URL" : "https://github.com/billeatman/CF-GoogleCal-V3.git"
+    },
+    "Bugs" : "https://github.com/billeatman/CF-GoogleCal-V3/issues",
+    "shortDescription" : "Google Calendar V3 for ColdFusion",
+    "keywords" : [ "google", "calendar", "API", "V3" ],
+    "engines" : [
+        { "type" : "railo", "version" : ">=4.1.x" },
+        { "type" : "adobe", "version" : ">=9.0.0" }
+    ],
+    "defaultEngine" : "cf11, cf10, cf9, railo",
+    "defaultPort" : 8080,
+    "CFCType" : "tag",
+    "License" : [
+        { "type" : "Apache2", "URL" : "http://www.apache.org/licenses/LICENSE-2.0.html" }
+    ]
+}

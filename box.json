@@ -1,7 +1,7 @@
 {
     "name" : "CF-GoogleCal-V3-Examples",
     "slug" : "CF-GoogleCal-V3-Examples",
-    "version" : "0.2.0",
+    "version" : "0.2.1",
     "author" : "William Eatman <billeatman@hotmail.com>",
     "location" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples.git",
     "createPackageDirectory" : "true",

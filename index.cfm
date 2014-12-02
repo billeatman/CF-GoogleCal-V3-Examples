@@ -20,7 +20,7 @@
 	If the SESSION key exists, we seem to have access to the API.
 --->
 <cfif application.oauth2.isAuth()>
-	<a href="calendar.cfm">Calendar Examples</a>&nbsp;<a href="revoke.cfm">Revoke API Access</a>		
+	<a href="examples.cfm">Calendar Examples</a>&nbsp;<a href="revoke.cfm">Revoke API Access</a>		
 
 	<!--- you can take this out.  Used to easily test refresh token. --->
 	<cfif application.oauth2.isRefresh()>			

@@ -1,35 +1,99 @@
 {
-    "name" : "CF-GoogleCal-V3-Examples",
-    "slug" : "CF-GoogleCal-V3-Examples",
-    "version" : "0.2.1",
-    "author" : "William Eatman <billeatman@hotmail.com>",
-    "location" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples.git",
-    "createPackageDirectory" : "true",
-    "Homepage" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples",
-    "Documentation" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples",
-    "Repository" : {
-        "type" : "git", "URL" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples.git"
+    "name":"CF-GoogleCal-V3-Examples",
+    "version":"0.3.0",
+    "author":"William Eatman <billeatman@hotmail.com>",
+    "location":"https://github.com/billeatman/CF-GoogleCal-V3-Examples.git",
+    "directory":"",
+    "createPackageDirectory":"true",
+    "packageDirectory":"",
+    "homepage":"https://github.com/billeatman/CF-GoogleCal-V3-Examples",
+    "documentation":"https://github.com/billeatman/CF-GoogleCal-V3-Examples",
+    "repository":{
+        "type":"git",
+        "URL":"https://github.com/billeatman/CF-GoogleCal-V3-Examples.git"
     },
-    "Bugs" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples/issues",
-    "shortDescription" : "Examples for CF-GoogleCal-V3",
-    "keywords" : [ "CF-GoogleCal-V3", "Oauth2", "Google", "Calendar", "V3"],
-    "engines" : [
-        { "type" : "railo", "version" : ">=4.1.x" },
-        { "type" : "adobe", "version" : ">=9.0.0" }
+    "bugs":"https://github.com/billeatman/CF-GoogleCal-V3-Examples/issues",
+    "slug":"CF-GoogleCal-V3-Examples",
+    "shortDescription":"Examples for CF-GoogleCal-V3",
+    "description":"",
+    "instructions":"",
+    "changelog":"",
+    "type":"",
+    "keywords":[
+        "CF-GoogleCal-V3",
+        "Oauth2",
+        "Google",
+        "Calendar",
+        "V3"
     ],
-    "defaultEngine" : "cf11, cf10, cf9, railo",
-    "defaultPort" : 8080,
-    "CFCType" : "tag",
-    "ProjectURL" : "https://github.com/billeatman/CF-GoogleCal-V3-Examples",
-    "License" : [
-        { "type" : "Apache2", "URL" : "http://www.apache.org/licenses/LICENSE-2.0.html" }
+    "private":false,
+    "engines":[
+        {
+            "type":"railo",
+            "version":">=4.1.x"
+        },
+        {
+            "type":"adobe",
+            "version":">=9.0.0"
+        }
     ],
-    "Dependencies" : {
-        "CF-GoogleCal-V3" : "x", 
-        "oauth2" : "x" 
+    "defaultEngine":"cf11,
+    \r\n     cf10,
+    \r\n     cf9,
+    \r\n     railo",
+    "defaultPort":8080,
+    "projectURL":"https://github.com/billeatman/CF-GoogleCal-V3-Examples",
+    "license":[
+        {
+            "type":"Apache2",
+            "URL":"http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    ],
+    "contributors":[
+        
+    ],
+    "dependencies":{
+        "CF-GoogleCal-V3":"0.8.0",
+        "oauth2":"1.2.0"
     },
-    "installPaths" : {
-        "CF-GoogleCal-V3" : "CF-GoogleCal-V3",
-        "oauth2" : "oauth2"
-    }
+    "devDependencies":{
+        
+    },
+    "installPaths":{
+        "CF-GoogleCal-V3":"CF-GoogleCal-V3",
+        "oauth2":"oauth2"
+    },
+    "ignore":[
+        
+    ],
+    "testbox":{
+        "runner":[
+            {
+                "default":""
+            }
+        ],
+        "labels":[
+            
+        ],
+        "reporter":"",
+        "reporterResults":"",
+        "bundles":[
+            ""
+        ],
+        "directory":{
+            "mapping":"",
+            "recurse":true
+        },
+        "watchers":[
+            
+        ],
+        "notify":{
+            "emails":[
+                
+            ],
+            "growl":"",
+            "url":""
+        }
+    },
+    "CFCType":"tag"
 }

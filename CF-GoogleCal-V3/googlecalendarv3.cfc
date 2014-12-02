@@ -3,6 +3,7 @@
 <cfset variables.oauth2 = "">
 <cfset variables.baseAPIEndpoint = "">
 <cfset variables.redirects = 5> <!--- number of times to try redirects --->
+<cfset variables.lastRequestURL = "">
 
 <cffunction name="init" access="public" output="false" hint="The constructor method.">
 	<cfargument name="oauth2" type="ANY" required="true" hint="oauth2 object">
@@ -38,6 +39,9 @@
 	<cfelse>
 		<cfset local.method = arguments.method>
 	</cfif>
+
+    <!--- Set the last request --->
+    <cfset variables.lastRequestURL = local.curl>
 
 	<!--- make request to google --->
     <cfset LOCAL.r = 0>
@@ -123,13 +127,22 @@
 		<cfloop array="#fileContent.items#" index=local.i>		
 			<cfset queryAddRow(local.qCals)>
 			<cfloop collection="#local.i#" item="local.key">
-		       	<cftry>	       		
-		       	<cfset querySetCell(local.qCals, local.key, local.i[local.key])>
+                <cfset local.attribVal = local.i[local.key]>
+    
+                <cfif isSimpleValue(local.attribVal)>                
+                    <!--- filter anything starting with a '#', and take out the leading '#' --->
+                    <cfif mid(local.attribVal, 1, 1) EQ chr(35)>
+        		       	<cfset local.attribVal = mid(local.attribVal, 2, 6)>
+                    </cfif>
+                </cfif>
+
+                <cftry>
+                    <cfset querySetCell(local.qCals, local.key, local.attribVal)>
 	        	<cfcatch>
-	        		<cfif isSimpleValue(local.i[local.key])>
+	        		<cfif isSimpleValue(local.attribVal)>
 	        			<!--- add a column --->
 	        			<cfset queryAddColumn(local.qCals, local.key, arrayNew(1))>
-				       	<cfset querySetCell(local.qCals, local.key, local.i[local.key])>
+                        <cfset querySetCell(local.qCals, local.key, local.attribVal)>
 	        		</cfif>
 	        	</cfcatch>
 	        	</cftry>
@@ -152,12 +165,12 @@
 	<cfset local.ret = "">
 
 	<cfif listFind("200,201,204", LOCAL.result.responseheader.status_code, ",") EQ 0>
-    	<cfset local.e.setError(message: "Error: #LOCAL.result.responseheader.status_code# #LOCAL.result.responseheader.explanation#")>
+        <cfset local.e.setError(message: "Error: #LOCAL.result.responseheader.status_code# #LOCAL.result.responseheader.explanation#")>
     	<cftry>    
         <cfset local.ret = deserializeJSON(LOCAL.result.fileContent)> 
     	<cfif structKeyExists(local.ret, 'error')>
-    		<cfset local.e.setError(message: local.ret.error.code & ' - ' & local.ret.error.message)>
-    	</cfif>
+    		<cfset local.e.setError(message: local.ret.error.code & ' - ' & local.ret.error.message, detail: 'Requested URL: ' & variables.lastRequestURL)>
+        </cfif>
     	<cfcatch>
     		<!--- <cfset local.e.setError(message: "Not JSON response")> --->
     	</cfcatch>
@@ -235,7 +248,7 @@
 
     <cfset local.curl = "/users/me/calendarList">
     <cfif arguments.calendarId NEQ "">
-        <cfset local.curl = local.curl & "/" & urlEncodedFormat(arguments.calendarId)>
+        <cfset local.curl = local.curl & "/" & trim(arguments.calendarId)>
     </cfif>
 
     <cfset local.result = MakeRequest(url: local.curl, method: 'GET')>
@@ -310,7 +323,7 @@
     <cfset local.e = new error()>
     <cfset local.ret = false>
 
-    <cfset local.curl = "/calendars/" & urlEncodedFormat(arguments.calendarId) & "/events">
+    <cfset local.curl = "/calendars/" & trim(arguments.calendarId) & "/events">
 
     <cfset local.curl = local.curl & "?z=z">
 
@@ -353,8 +366,8 @@
     <cfset local.e = new error()>
     <cfset local.ret = false>
 
-    <cfset local.curl = "/calendars/" & urlEncodedFormat(arguments.calendarId) 
-    	& "/events/" & urlEncodedFormat(arguments.eventId)>
+    <cfset local.curl = "/calendars/" & trim(arguments.calendarId) 
+    	& "/events/" & trim(arguments.eventId)>
 
     <cfset local.result = MakeRequest(url: local.curl, method: 'GET')>
 
@@ -372,7 +385,7 @@
     	<cfset local.e.throw(message: "Invalid resultType.  Allowed types (default) none and raw")>
     </cfif>
 
-    <cfset local.curl = "/calendars/" & urlEncodedFormat(arguments.calendarId)>
+    <cfset local.curl = "/calendars/" & trim(arguments.calendarId)>
 
     <cfset local.result = MakeRequest(url: local.curl, method: 'DELETE')>
 
@@ -390,7 +403,7 @@
     <cfset local.e = new error()>
     <cfset local.ret = false>
 
-	<cfset local.curl = "/calendars/" & urlEncodedFormat(arguments.calendarId)>
+	<cfset local.curl = "/calendars/" & trim(arguments.calendarId)>
 
 	<!--- Create Body --->    
     <cfset local.body = structNew()>
@@ -484,7 +497,7 @@
 </cffunction>
 
 <cffunction name="ValidateEvent" access="private" returntype="void">
-    <cfreturn ValidateCalendar(arguments: argumentCollection)>
+    <cfreturn ValidateCalendar(argumentCollection: arguments)>
 </cffunction>
 
 <cffunction name="CreateEvent" access="public" returnType="any" output="false" hint="Adds an event. Returns Success or another message.">
@@ -499,7 +512,7 @@
     <cfargument name="timeZone" type="string" required="false" default="UTC">
     <cfargument name="resultType" required="false" default="query" type="string" hint="query, fileContent, raw">
 
-	<cfset ValidateCalendar(argumentCollection: arguments)>
+	<cfset ValidateEvent(argumentCollection: arguments)>
 
     <cfset local.e = new error()>
     <cfset local.ret = false>
@@ -512,24 +525,24 @@
     <cfif arguments.allday NEQ true>
         <!--- Required Fields --->
         <cfset local.body["start"] = {
-        	'dateTime': GetISO8601(arguments.start),
-        	'timeZone': arguments.timeZone
+        	'dateTime' = GetISO8601(arguments.start),
+        	'timeZone' = arguments.timeZone
         }>	
         
         <cfset local.body["end"] = {
-        	'dateTime': GetISO8601(arguments.end),
-        	'timeZone': arguments.timeZone
+        	'dateTime' = GetISO8601(arguments.end),
+        	'timeZone' = arguments.timeZone
         }>
     <cfelse>
         <!--- Required Fields --->
         <cfset local.body["start"] = {
-            'date': dateFormat(arguments.start, 'yyyy-mm-dd'),
-            'timeZone': arguments.timeZone
+            'date' = dateFormat(arguments.start, 'yyyy-mm-dd'),
+            'timeZone' = arguments.timeZone
         }>  
         
         <cfset local.body["end"] = {
-            'date': dateFormat(dateAdd('d', 1, arguments.end), 'yyyy-mm-dd'),
-            'timeZone': arguments.timeZone
+            'date' = dateFormat(dateAdd('d', 1, arguments.end), 'yyyy-mm-dd'),
+            'timeZone' = arguments.timeZone
         }>
     </cfif>
 
@@ -570,16 +583,27 @@
     <cfargument name="creator" type="struct" required="false">
     <cfargument name="allday" type="boolean" required="false" default="false">
     <cfargument name="timeZone" type="string" required="false" default="UTC">
+    <cfargument name="sequence" type="numeric" required="false" default="0">
     <cfargument name="resultType" required="false" default="query" type="string" hint="query, fileContent, raw">
 
-    <cfset ValidateCalendar(argumentCollection: arguments)>
+
+    <cfset ValidateEvent(argumentCollection: arguments)>
+
+    <!--- get the previous sequence number --->
+    <cfif arguments.sequence EQ 0>
+        <cfset local.event = getEvent(
+    calendarId: arguments.calendarId
+    , eventId: arguments.eventId
+    , resultType: 'fileContent')>
+        <cfset arguments.sequence = local.event.sequence>
+    </cfif>
 
     <cfset arguments.calendarId = trim(arguments.calendarId)>
 
     <cfset local.e = new error()>
     <cfset local.ret = false>
 
-    <cfset local.curl = "/calendars/" & trim(arguments.calendarId) & "/events/" & urlEncodedFormat(arguments.eventId)>
+    <cfset local.curl = "/calendars/" & trim(arguments.calendarId) & "/events/" & trim(arguments.eventId)>
 
     <!--- Create Body --->    
     <cfset local.body = structNew()>
@@ -587,25 +611,29 @@
     <cfif arguments.allday NEQ true>
         <!--- Required Fields --->
         <cfset local.body["start"] = {
-            'dateTime': GetISO8601(arguments.start),
-            'timeZone': arguments.timeZone
+            'dateTime' = GetISO8601(arguments.start),
+            'timeZone' = arguments.timeZone
         }>  
         
         <cfset local.body["end"] = {
-            'dateTime': GetISO8601(arguments.end),
-            'timeZone': arguments.timeZone
+            'dateTime' = GetISO8601(arguments.end),
+            'timeZone' = arguments.timeZone
         }>
     <cfelse>
         <!--- Required Fields --->
         <cfset local.body["start"] = {
-            'date': dateFormat(arguments.start, 'yyyy-mm-dd'),
-            'timeZone': arguments.timeZone
+            'date' = dateFormat(arguments.start, 'yyyy-mm-dd'),
+            'timeZone' = arguments.timeZone
         }>  
         
         <cfset local.body["end"] = {
-            'date': dateFormat(dateAdd('d', 1, arguments.end), 'yyyy-mm-dd'),
-            'timeZone': arguments.timeZone
+            'date' = dateFormat(dateAdd('d', 1, arguments.end), 'yyyy-mm-dd'),
+            'timeZone' = arguments.timeZone
         }>
+    </cfif>
+
+    <cfif structKeyExists(arguments, "sequence")>
+        <cfset local.body["sequence"] = arguments.sequence>   
     </cfif>
 
     <cfif structKeyExists(arguments, "summary")>
